@@ -1,0 +1,5 @@
+/.htaccess
+/Config.php
+/composer.lock
+/db/
+/vendor/
