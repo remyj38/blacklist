@@ -34,8 +34,9 @@ if (file_exists('pages/' . $page . '.php')) {
     if ($auth->isAllowed($page)) {
         include 'pages/' . $page . '.php';
     } else {
-        http_response_code(403);
-        echo 'Your not allowed to access this page';
+        http_response_code(302);
+        header('Location: ' . Config::BASE_URL . '/user/login');
+        exit(0);
     }
 } else {
     http_response_code(404);
