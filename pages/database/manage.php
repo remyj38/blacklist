@@ -4,7 +4,11 @@ $errors = array();
 if (isset($_GET['action'])) {
     switch($_GET['action']){
         case 'new':
-            $currentEntry = new \Blacklist\Entry();
+            // If IP already in the database, load it to update or create a new one
+            $currentEntry = \Blacklist\Entry::findEntryByIP($_POST['ip']);
+            if (!$currentEntry){
+                $currentEntry = new \Blacklist\Entry();
+            }
             break;
         case 'edit':
             $currentEntry = \Blacklist\Entry::findEntryById(htmlspecialchars($_GET['id']));
@@ -18,9 +22,7 @@ if (isset($_GET['action'])) {
             if (!isset($_POST['ip']) || empty($_POST['ip'])) {
                 $errors[] = "IP is required";
             } else {
-                if (\Blacklist\Entry::findEntryByIP($_POST['ip']) && $_POST['ip'] != $currentEntry->getIp()) {
-                    $errors[] = "This IP is already in the database";
-                } else {
+                if (!\Blacklist\Entry::findEntryByIP($_POST['ip'])) {
                     try {
                         $currentEntry->setIp($_POST['ip']);
                     } catch (\Blacklist\IPValidateException $e) {
@@ -42,7 +44,7 @@ if (isset($_GET['action'])) {
         if (!$errors) {
             try {
                 $currentEntry->save();
-                header('Location: ' . \Config::BASE_URL . '/database/manage?success=' . $currentEntry->getIp() . ((isset($_GET['id'])) ? ' updated' : ' added') . ' with success');
+                header('Location: ' . \Config::BASE_URL . '/database/manage?success=' . $currentEntry->getIp() . (($currentEntry->getUpdator()) ? ' updated' : ' added') . ' with success');
                 exit(0);
             } catch (\Exception $e) {
                 $errors[] = "Unable to save entry:<br>".$e->getMessage();
