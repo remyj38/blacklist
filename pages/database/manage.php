@@ -88,7 +88,7 @@ $queryString = implode('&', array_map(function ($v, $k) {
 <form name="entityForm" action="<?php echo \Config::BASE_URL . '/database/manage?'. ((in_array('action', array_keys($_GET))) ? $queryString : 'action=new'); ?>" method="POST" onsubmit="return ValidateIPaddress()">
     <div class="form-group">
         <label for="ip">IP</label>
-        <input type="text" class="form-control" id="ip" name="ip" value="<?php echo ($currentEntry->getId()) ? $currentEntry->getIp() : ((isset($_POST['ip'])) ? $_POST['ip'] : ''); ?>" onkeyup="ValidateIPaddress()" <?php if ($currentEntry->getId()) { echo 'readonly';} ?> autocomplete="false">
+        <input type="text" class="form-control" id="ip" name="ip" value="<?php echo ($currentEntry->getId()) ? $currentEntry->getIp() : ((isset($_POST['ip'])) ? $_POST['ip'] : ''); ?>" onkeyup="ValidateIPaddress()" <?php if ($currentEntry->getId()) { echo 'readonly';} ?> autocomplete="off">
         <div class="invalid-feedback">
           Please provide a valid IP
         </div>
