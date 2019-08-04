@@ -40,7 +40,7 @@ class Entry {
      */
     public function __construct() {
         global $auth;
-        $this->creator = $auth->getUser()->getUsername();
+        $this->creator = ($auth->getUser()) ? $auth->getUser()->getUsername() : '';
         $this->creation_date = time();
         $this->expiration_date = (new \DateTime(\Config::DEFAULT_EXPIRATION))->getTimestamp();
         return $this;
