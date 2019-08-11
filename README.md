@@ -49,7 +49,7 @@ Your personal ip blacklist management interface for postfix
     ```bash
     sudo crontab -e
     # Insert the following line and save the file
-    0 * * * * /root/updatePostfix.sh
+    0 * * * * /root/updatePostfix.sh > /dev/null
     ```
 1. Edit /etc/postfix/main.cf and modify or add the `smtpd_client_restrictions` parameter to add the followed check:
     ```
